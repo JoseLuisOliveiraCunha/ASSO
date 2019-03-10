@@ -1,10 +1,15 @@
 export interface RenderEntity {
     drawSquare(args: String[]): any;
     drawRectangle(args: String[]): any;
+    replaceHTMLRenderingArea(): any;
+    cleanDrawBoard(): any;
 }
 
 export class Canvas implements RenderEntity {
     
+    private canvasWidth = 800;
+    private canvasHeight = 600;
+
     drawSquare(args: String[]) {
         
         args.shift() //to remove the 'square' argument of the draw expression
@@ -42,10 +47,23 @@ export class Canvas implements RenderEntity {
         //canvasContext.fillRect(x, y, width, height);
     }
 
+    replaceHTMLRenderingArea() {
+        replaceHTMLRenderingAreaAux(`<canvas id="canvas" width="${this.canvasWidth}" height="${this.canvasHeight}"></canvas>`);
+    }
+
+    cleanDrawBoard() {
+        console.log("Canvas - CLEANING BOARD");
+        
+        let canvas = <HTMLCanvasElement> document.getElementById('canvas');
+        let canvasContext = <CanvasRenderingContext2D> canvas.getContext('2d');
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
 export class SVG implements RenderEntity {
     
+    private SVGWidth = 800;
+    private SVGHeight = 600;
     private namespace = "http://www.w3.org/2000/svg";
 
     drawSquare(args: String[]) {
@@ -91,5 +109,37 @@ export class SVG implements RenderEntity {
         var svg = document.getElementById('svg');
         if(svg != undefined)
             svg.appendChild(rect);
+    }
+
+    replaceHTMLRenderingArea() {
+        replaceHTMLRenderingAreaAux(`<svg id="svg" width="${this.SVGWidth}" height="${this.SVGHeight}"></svg>`);
+    }
+
+    cleanDrawBoard() {
+        console.log("SVG - CLEANING BOARD");
+ 
+        /*let rect = document.createElementNS(this.namespace, 'rect');
+        rect.setAttributeNS(null, 'x', '0');
+        rect.setAttributeNS(null, 'y', '0');
+        rect.setAttributeNS(null, 'width', this.SVGWidth.toString());
+        rect.setAttributeNS(null, 'height', this.SVGHeight.toString());
+        rect.setAttributeNS(null,"fill"  ,"#ffffff");
+        rect.setAttributeNS(null,"stroke","none");
+
+        var svg = document.getElementById('svg');
+        if(svg != undefined)
+            svg.appendChild(rect);*/
+        
+        var svg = document.getElementById('svg');
+        if(svg != undefined)
+            svg.innerHTML = '';   
+    }
+}
+
+function replaceHTMLRenderingAreaAux(newElem : String) {
+    var divElem = document.getElementById('rendering_area');
+    if(divElem) {
+        divElem.removeChild(divElem.children[0]);
+        divElem.innerHTML = newElem + divElem.innerHTML;
     }
 }
