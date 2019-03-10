@@ -1,73 +1,113 @@
 //AND e UNION operator proxima aula 
 
-
-/* export interface AbstractExpression {
+interface AbstractExpression {
     interpret(context: String): boolean;
 }
 
-export class InstructionExpression implements AbstractExpression {
+class TemporaryExpression implements AbstractExpression {
+    
+    constructor(){}
 
-    private expression: AbstractExpression;
+    interpret(context: String): boolean {
+        return false;
+    }
+}
+
+export class MasterExpression implements AbstractExpression {
+
+    private expression : AbstractExpression;
 
     constructor() {
-        this.expression = new InstructionExpression();
+        this.expression = new TemporaryExpression();
+    }
+
+    public interpret(context: String): boolean {
+        console.log("`interpret` method of MasterExpression is being called!");
+
+        var contextParts : String[] = context.split(" AND ");
+
+        if(contextParts.length == 1) {
+            this.expression = new InstructionExpression();
+        }
+        else {
+            this.expression = new AndExpression();
+        }
+
+        return this.expression.interpret(context);
+    }
+}
+
+class InstructionExpression implements AbstractExpression {
+
+    private expression : AbstractExpression; 
+
+    constructor(){
+        this.expression = new TemporaryExpression();
     }
 
     public interpret(context: String): boolean {
         console.log("`interpret` method of InstructionExpression is being called!");
 
-        var contextParts: String[] = context.split(" ");
+        var contextParts : String[] = context.split(" ");
 
-        switch (contextParts[0]) {
+        switch(contextParts[0])
+        {
             case "draw":
                 this.expression = new DrawExpression();
                 break;
-            default:
+            default: 
                 return false;
-
+    
         }
-
-        var rest: String = context.substring(context.indexOf(" "));
-
+        
+        var rest : String = context.substring(context.indexOf(" ") + 1);
+        
         return this.expression.interpret(rest);
     }
 }
 
-export class AndExpression implements AbstractExpression {
+class AndExpression implements AbstractExpression {
 
-    private expression1: AbstractExpression;
-    private expression2: AbstractExpression;
+    private lhsExpression : AbstractExpression;
+    private rhsExpression : AbstractExpression;
 
-    constructor(e1: AbstractExpression, e2: AbstractExpression) {
-        this.expression1 = e1;
-        this.expression2 = e2;
+    constructor(){
+        this.lhsExpression = new TemporaryExpression();
+        this.rhsExpression = new TemporaryExpression();
     }
 
     public interpret(context: String): boolean {
-        console.log("`interpret` method of DrawExpression is being called!");
+        console.log("`interpret` method of AndExpression is being called!");
 
-        return this.expression1.interpret(context) && this.expression2.interpret(context);
+        var contextParts : String[] = context.split(" AND ");
+        var restContext : String = context.substr(context.indexOf(" AND ") + " AND ".length);
+
+        this.lhsExpression = new InstructionExpression();
+        this.rhsExpression = new MasterExpression();
+
+        return this.lhsExpression.interpret(contextParts[0]) && this.rhsExpression.interpret(restContext);
     }
 }
 
-export class DrawExpression implements AbstractExpression {
+class DrawExpression implements AbstractExpression {
 
     public interpret(context: String): boolean {
         console.log("`interpret` method of DrawExpression is being called!");
 
-        var contextParts: String[] = context.split(" ");
+        var contextParts : String[] = context.split(" ");
 
-        switch (contextParts[0]) {
+        switch(contextParts[0])
+        {
             case "square":
-                console.log("DRAW SQUARE");
+                console.log("DRAW SQUARE" + context.substr(context.indexOf(" ")));
                 return contextParts.length == 4;
                 break;
             case "rect":
-                console.log("DRAW SQUARE");
+                console.log("DRAW RECT");
                 return contextParts.length == 5;
                 break;
-            default:
+            default: 
                 return false;
         }
     }
-} */
+}
