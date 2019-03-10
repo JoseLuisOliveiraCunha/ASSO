@@ -21,9 +21,11 @@ class AppInfo {
     }
     static setCanvas() {
         this.renderingSystem = new strategy_1.Canvas();
+        this.renderingSystem.replaceHTMLRenderingArea();
     }
     static setSVG() {
-        return this.renderingSystem = new strategy_1.SVG();
+        this.renderingSystem = new strategy_1.SVG();
+        this.renderingSystem.replaceHTMLRenderingArea();
     }
 }
 AppInfo.renderingSystem = new strategy_1.Canvas(); //Rendering occurs in canvas, by default

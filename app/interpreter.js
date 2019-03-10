@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const singleton_1 = require("./singleton");
 class TemporaryExpression {
-    constructor() { }
     interpret(context) {
         return false;
     }
@@ -32,6 +31,12 @@ class InstructionExpression {
     interpret(context) {
         console.log("`interpret` method of InstructionExpression is being called!");
         var contextParts = context.split(" ");
+        var unionParts = context.split(" UNION ");
+        console.log("union parts " + unionParts);
+        if (unionParts.length != 1) {
+            this.expression = new UnionExpression();
+            return this.expression.interpret(context);
+        }
         switch (contextParts[0]) {
             case "draw":
                 this.expression = new DrawExpression();
@@ -69,6 +74,43 @@ class DrawExpression {
             case "rect":
                 singleton_1.AppInfo.getRenderingSystem().drawRectangle(contextParts);
                 return contextParts.length == 4; //drawRectangle tira 'rect' do contextParts, portanto o length e 4
+                break;
+            default:
+                return false;
+        }
+    }
+}
+class UnionExpression {
+    interpret(context) {
+        console.log("`interpret` method of UnionExpression is being called!");
+        console.log("context: " + context);
+        var contextParts = context.split(" UNION ");
+        var i;
+        var parcels = [];
+        for (i = 0; i < contextParts.length; i++) {
+            let parcel = new UnionParcel();
+            if (!parcel.interpret(contextParts[i])) {
+                console.log("Invalid UNION EXPRESSION");
+                return false;
+            }
+            parcels.push(contextParts[i]);
+        }
+        singleton_1.AppInfo.getRenderingSystem().drawUnion(parcels);
+        return true;
+    }
+}
+class UnionParcel {
+    interpret(context) {
+        console.log("`interpret` method of DrawExpression is being called!");
+        var contextParts = context.split(" ");
+        if (contextParts[0] != "draw")
+            return false;
+        switch (contextParts[1]) {
+            case "square":
+                return contextParts.length == 5;
+                break;
+            case "rect":
+                return contextParts.length == 6;
                 break;
             default:
                 return false;

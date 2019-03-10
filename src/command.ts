@@ -1,5 +1,6 @@
 import { LinkedList } from 'linked-list-typescript';
 import {MasterExpression} from './interpreter'
+import { AppInfo } from './singleton';
 
 export class Command {
     private commandStack : LinkedList<Memento> = new LinkedList<Memento>();
@@ -16,7 +17,7 @@ export class Command {
         if(this.commandStack.length == 0)
             currentCommand = new Memento(context);
         else
-            currentCommand = new Memento(context, this.commandStack.head)
+            currentCommand = new Memento(context, this.commandStack.head);
 
         this.commandStack.prepend(currentCommand);
         this.redoStack = new LinkedList<Memento>();
@@ -25,15 +26,18 @@ export class Command {
     public undo() : void {
        if (this.commandStack.length == 0)
           return;
-       var m : Memento = this.commandStack.removeHead();
-       this.redoStack.prepend(m)
+
+        var m : Memento = this.commandStack.removeHead();
+        this.redoStack.prepend(m);
+        this.redraw();
     }
  
     public redo() : void {
        if (this.redoStack.length == 0)
           return;
         var m : Memento = this.redoStack.removeHead();
-        this.commandStack.prepend(m)
+        this.commandStack.prepend(m);
+        this.redraw();
     }
 
     public getCurrentState() : Memento {
@@ -41,9 +45,14 @@ export class Command {
     }
 
     public redraw() : void {
+        //limpar o canvas primeiro
+        AppInfo.getRenderingSystem().cleanDrawBoard();
+
+        if(this.commandStack.length == 0)
+            return;
         var m : Memento = this.commandStack.head;
         var me = new MasterExpression();
-        for(var context in m.getContextList()) {
+        for(var context of m.getContextList()) {
             me.interpret(context);
         }
     }
@@ -54,7 +63,8 @@ class Memento {
 
     public constructor(context: String, previous?: Memento) {
         if(previous != null)
-            this.contextList = previous.getContextList();
+            for(var command of previous.getContextList())
+                this.contextList.push(command);
         this.contextList.push(context);
     }
  

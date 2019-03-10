@@ -29,9 +29,11 @@ export class AppInfo {
 
     public static setCanvas() {
         this.renderingSystem = new Canvas();
+        this.renderingSystem.replaceHTMLRenderingArea();
     }
 
     public static setSVG() {
-        return this.renderingSystem = new SVG();
+        this.renderingSystem = new SVG();
+        this.renderingSystem.replaceHTMLRenderingArea();
     }
 }
