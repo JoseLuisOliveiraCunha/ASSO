@@ -1,19 +1,17 @@
 "use strict";
 //AND e UNION operator proxima aula 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TemporaryExpression = /** @class */ (function () {
-    function TemporaryExpression() {
-    }
-    TemporaryExpression.prototype.interpret = function (context) {
+class TemporaryExpression {
+    constructor() { }
+    interpret(context) {
         return false;
-    };
-    return TemporaryExpression;
-}());
-var MasterExpression = /** @class */ (function () {
-    function MasterExpression() {
+    }
+}
+class MasterExpression {
+    constructor() {
         this.expression = new TemporaryExpression();
     }
-    MasterExpression.prototype.interpret = function (context) {
+    interpret(context) {
         console.log("`interpret` method of MasterExpression is being called!");
         var contextParts = context.split(" AND ");
         if (contextParts.length == 1) {
@@ -23,15 +21,14 @@ var MasterExpression = /** @class */ (function () {
             this.expression = new AndExpression();
         }
         return this.expression.interpret(context);
-    };
-    return MasterExpression;
-}());
+    }
+}
 exports.MasterExpression = MasterExpression;
-var InstructionExpression = /** @class */ (function () {
-    function InstructionExpression() {
+class InstructionExpression {
+    constructor() {
         this.expression = new TemporaryExpression();
     }
-    InstructionExpression.prototype.interpret = function (context) {
+    interpret(context) {
         console.log("`interpret` method of InstructionExpression is being called!");
         var contextParts = context.split(" ");
         switch (contextParts[0]) {
@@ -43,28 +40,24 @@ var InstructionExpression = /** @class */ (function () {
         }
         var rest = context.substring(context.indexOf(" ") + 1);
         return this.expression.interpret(rest);
-    };
-    return InstructionExpression;
-}());
-var AndExpression = /** @class */ (function () {
-    function AndExpression() {
+    }
+}
+class AndExpression {
+    constructor() {
         this.lhsExpression = new TemporaryExpression();
         this.rhsExpression = new TemporaryExpression();
     }
-    AndExpression.prototype.interpret = function (context) {
+    interpret(context) {
         console.log("`interpret` method of AndExpression is being called!");
         var contextParts = context.split(" AND ");
         var restContext = context.substr(context.indexOf(" AND ") + " AND ".length);
         this.lhsExpression = new InstructionExpression();
         this.rhsExpression = new MasterExpression();
         return this.lhsExpression.interpret(contextParts[0]) && this.rhsExpression.interpret(restContext);
-    };
-    return AndExpression;
-}());
-var DrawExpression = /** @class */ (function () {
-    function DrawExpression() {
     }
-    DrawExpression.prototype.interpret = function (context) {
+}
+class DrawExpression {
+    interpret(context) {
         console.log("`interpret` method of DrawExpression is being called!");
         var contextParts = context.split(" ");
         switch (contextParts[0]) {
@@ -79,6 +72,5 @@ var DrawExpression = /** @class */ (function () {
             default:
                 return false;
         }
-    };
-    return DrawExpression;
-}());
+    }
+}
