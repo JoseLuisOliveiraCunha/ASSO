@@ -60,16 +60,18 @@ class Canvas {
                     canvasContext.strokeRect(x, y, size, size);
                 else
                     canvasContext.fillRect(x, y, size, size);
+                break;
             case "rect":
                 x = Number(parcelParts[1]);
                 y = Number(parcelParts[2]);
-                width = Number(parcelParts[2]);
-                height = Number(parcelParts[3]);
+                width = Number(parcelParts[3]);
+                height = Number(parcelParts[4]);
                 canvasContext.beginPath();
                 if (stroke)
                     canvasContext.strokeRect(x, y, width, height);
                 else
                     canvasContext.fillRect(x, y, width, height);
+                break;
         }
     }
     replaceHTMLRenderingArea() {
@@ -122,7 +124,22 @@ class SVG {
             svg.appendChild(rect);
     }
     drawUnion(parcels) {
-        throw new Error("Method not implemented.");
+        var i;
+        for (i = 0; i < parcels.length; i++) {
+            this.drawParcel(parcels[i]);
+        }
+    }
+    drawParcel(parcel) {
+        var parcelParts = parcel.split(" ");
+        parcelParts.shift();
+        switch (parcelParts[0]) {
+            case "square":
+                this.drawSquare(parcelParts);
+                break;
+            case "rect":
+                this.drawRectangle(parcelParts);
+                break;
+        }
     }
     replaceHTMLRenderingArea() {
         replaceHTMLRenderingAreaAux(`<svg id="svg" width="${this.SVGWidth}" height="${this.SVGHeight}"></svg>`);

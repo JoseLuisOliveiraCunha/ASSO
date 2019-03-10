@@ -70,11 +70,9 @@ class DrawExpression {
             case "square":
                 singleton_1.AppInfo.getRenderingSystem().drawSquare(contextParts);
                 return contextParts.length == 3; //drawSquare tira 'square' do contextParts, portanto o length e 3
-                break;
             case "rect":
                 singleton_1.AppInfo.getRenderingSystem().drawRectangle(contextParts);
                 return contextParts.length == 4; //drawRectangle tira 'rect' do contextParts, portanto o length e 4
-                break;
             default:
                 return false;
         }
@@ -108,10 +106,8 @@ class UnionParcel {
         switch (contextParts[1]) {
             case "square":
                 return contextParts.length == 5;
-                break;
             case "rect":
                 return contextParts.length == 6;
-                break;
             default:
                 return false;
         }

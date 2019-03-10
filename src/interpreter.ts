@@ -109,11 +109,9 @@ class DrawExpression implements AbstractExpression {
             case "square":
                 AppInfo.getRenderingSystem().drawSquare(contextParts);
                 return contextParts.length == 3; //drawSquare tira 'square' do contextParts, portanto o length e 3
-                break;
             case "rect":
                 AppInfo.getRenderingSystem().drawRectangle(contextParts);
                 return contextParts.length == 4; //drawRectangle tira 'rect' do contextParts, portanto o length e 4
-                break;
             default: 
                 return false;
         }
@@ -164,10 +162,8 @@ class UnionParcel implements AbstractExpression {
         {
             case "square":
                 return contextParts.length == 5; 
-                break;
             case "rect":
                 return contextParts.length == 6;
-                break;
             default: 
                 return false;
         }
