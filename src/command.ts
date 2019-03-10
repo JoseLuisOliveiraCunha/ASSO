@@ -1,7 +1,7 @@
 import { LinkedList } from 'linked-list-typescript';
 import {MasterExpression} from './interpreter'
 
-class Command {
+export class Command {
     private commandStack : LinkedList<Memento> = new LinkedList<Memento>();
     private redoStack : LinkedList<Memento> = new LinkedList<Memento>();
  
@@ -47,9 +47,9 @@ class Command {
             me.interpret(context);
         }
     }
- }
+}
 
- class Memento {
+class Memento {
     private contextList : String[] = [];
 
     public constructor(context: String, previous?: Memento) {
@@ -61,4 +61,4 @@ class Command {
     public getContextList() : String[] {
        return this.contextList;
     }
- }
+}

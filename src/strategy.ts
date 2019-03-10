@@ -4,8 +4,6 @@ export interface RenderEntity {
 }
 
 export class Canvas implements RenderEntity {
-
-    private canvas = <HTMLCanvasElement> document.getElementById('canvas');
     
     drawSquare(args: String[]) {
         
@@ -13,7 +11,8 @@ export class Canvas implements RenderEntity {
 
         console.log("Canvas - DRAW SQUARE " + args);
 
-        let canvasContext = <CanvasRenderingContext2D> this.canvas.getContext('2d');
+        let canvas = <HTMLCanvasElement> document.getElementById('canvas');
+        let canvasContext = <CanvasRenderingContext2D> canvas.getContext('2d');
 
         let x = Number(args[0]);
         let y = Number(args[1]);
@@ -30,7 +29,8 @@ export class Canvas implements RenderEntity {
 
         console.log("Canvas - DRAW RECT " + args);
 
-        let canvasContext = <CanvasRenderingContext2D> this.canvas.getContext('2d');
+        let canvas = <HTMLCanvasElement> document.getElementById('canvas');
+        let canvasContext = <CanvasRenderingContext2D> canvas.getContext('2d');
 
         let x = Number(args[0]);
         let y = Number(args[1]);
@@ -45,8 +45,6 @@ export class Canvas implements RenderEntity {
 }
 
 export class SVG implements RenderEntity {
-
-    private svg = document.getElementById('svg'); 
     
     private namespace = "http://www.w3.org/2000/svg";
 
@@ -67,8 +65,9 @@ export class SVG implements RenderEntity {
         square.setAttributeNS(null, 'width', size);
         square.setAttributeNS(null, 'height', size);
 
-        if(this.svg != undefined)
-            this.svg.appendChild(square);
+        var svg = document.getElementById('svg');
+        if(svg != undefined)
+            svg.appendChild(square);
     }
 
     drawRectangle(args: String[]) {
@@ -89,7 +88,8 @@ export class SVG implements RenderEntity {
         rect.setAttributeNS(null, 'width', width);
         rect.setAttributeNS(null, 'height', height);
 
-        if(this.svg != undefined)
-            this.svg.appendChild(rect);
+        var svg = document.getElementById('svg');
+        if(svg != undefined)
+            svg.appendChild(rect);
     }
 }

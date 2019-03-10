@@ -1,6 +1,6 @@
 //AND e UNION operator proxima aula 
 
-import {renderingSystem} from './app' //VARIABLE CONTAINING THE AREA WHERE THE DRAWING WILL TAKE PLACE
+import {AppInfo} from './singleton'
 
 interface AbstractExpression {
     interpret(context: String): boolean;
@@ -97,16 +97,16 @@ class DrawExpression implements AbstractExpression {
         console.log("`interpret` method of DrawExpression is being called!");
 
         var contextParts : String[] = context.split(" ");
-
+        
         switch(contextParts[0])
         {
             case "square":
-                console.log("DRAW SQUARE" + context.substr(context.indexOf(" ")));
-                return contextParts.length == 4;
+                AppInfo.getRenderingSystem().drawSquare(contextParts);
+                return contextParts.length == 3; //drawSquare tira 'square' do contextParts, portanto o length e 3
                 break;
             case "rect":
-                console.log("DRAW RECT");
-                return contextParts.length == 5;
+                AppInfo.getRenderingSystem().drawRectangle(contextParts);
+                return contextParts.length == 4; //drawRectangle tira 'rect' do contextParts, portanto o length e 4
                 break;
             default: 
                 return false;

@@ -1,13 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Canvas {
-    constructor() {
-        this.canvas = document.getElementById('canvas');
-    }
     drawSquare(args) {
         args.shift(); //to remove the 'square' argument of the draw expression
         console.log("Canvas - DRAW SQUARE " + args);
-        let canvasContext = this.canvas.getContext('2d');
+        let canvas = document.getElementById('canvas');
+        let canvasContext = canvas.getContext('2d');
         let x = Number(args[0]);
         let y = Number(args[1]);
         let size = Number(args[2]);
@@ -18,7 +16,8 @@ class Canvas {
     drawRectangle(args) {
         args.shift(); //to remove the 'rect' argument of the draw expression
         console.log("Canvas - DRAW RECT " + args);
-        let canvasContext = this.canvas.getContext('2d');
+        let canvas = document.getElementById('canvas');
+        let canvasContext = canvas.getContext('2d');
         let x = Number(args[0]);
         let y = Number(args[1]);
         let width = Number(args[2]);
@@ -31,7 +30,6 @@ class Canvas {
 exports.Canvas = Canvas;
 class SVG {
     constructor() {
-        this.svg = document.getElementById('svg');
         this.namespace = "http://www.w3.org/2000/svg";
     }
     drawSquare(args) {
@@ -45,8 +43,9 @@ class SVG {
         square.setAttributeNS(null, 'y', y);
         square.setAttributeNS(null, 'width', size);
         square.setAttributeNS(null, 'height', size);
-        if (this.svg != undefined)
-            this.svg.appendChild(square);
+        var svg = document.getElementById('svg');
+        if (svg != undefined)
+            svg.appendChild(square);
     }
     drawRectangle(args) {
         args.shift(); //to remove the 'rect' argument of the draw expression
@@ -60,8 +59,9 @@ class SVG {
         rect.setAttributeNS(null, 'y', y);
         rect.setAttributeNS(null, 'width', width);
         rect.setAttributeNS(null, 'height', height);
-        if (this.svg != undefined)
-            this.svg.appendChild(rect);
+        var svg = document.getElementById('svg');
+        if (svg != undefined)
+            svg.appendChild(rect);
     }
 }
 exports.SVG = SVG;

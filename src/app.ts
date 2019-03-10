@@ -1,36 +1,30 @@
-import {MasterExpression} from './interpreter'
-import {RenderEntity, Canvas, SVG} from './strategy'
+import {Command} from './command'
 
-let renderingSystem : RenderEntity = new Canvas();
-export {renderingSystem};
+var app = new Command();
 
-class Commands {
-
-    constructor() {
+function draw() {
+    var canvas = <HTMLCanvasElement> document.getElementById('canvas');
+    if (canvas.getContext) {
+        let ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+        ctx.fillRect(25, 25, 100, 100);
     }
+}
 
-    public test(str : String){
-        var instruction : MasterExpression = new MasterExpression();
-        return instruction.interpret(str);
-    }
-
-    public draw() {
-        var canvas = <HTMLCanvasElement> document.getElementById('canvas');
-        if (canvas.getContext) {
-            let ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-            ctx.fillRect(25, 25, 100, 100);
-        }
-    }
+function test(str : String){
+    app.execute(str);
 }
 
 window.onload = () => {
-    let app = new Commands();
+    
+    var formElem = document.getElementById('REPL_form');
 
-    if(app.test("draw square 2 2 4"))
-        app.draw();
-    
-    
-    //TODO: passar a rendering tool para
+    if(formElem) {
+
+        formElem.onsubmit = function(event){
+            event.preventDefault();
+
+            let instruction = (<HTMLInputElement> document.getElementById('instruction')).value;
+            app.execute(instruction);
+        };
+    }
 }
-
-//document.body.innerHTML = String(app.test("draw square 2 2 4"));

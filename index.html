@@ -2,11 +2,22 @@
 <html>
 <body>
 
-<script src="./dist/bundle.js"></script>
+    <script src="./dist/bundle.js"></script>
 
-<h1>My First JavaScript</h1>
+    <h1>SimpleDraw.js</h1>
 
-<canvas id="canvas" width="300" height="150"></canvas>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <hr>
+    <svg id="svg" width="800" height="600"></svg>
+
+    <form id="REPL_form">
+        Introduce your instruction
+        <textarea id="instruction" cols="300" rows ="1">draw square 2 2 4</textarea>
+        <input type="submit" value="Execute">
+    </form>
+
+    <p>Simple example: draw square 2 2 4</p>
+    <p>3 AND's example: draw square 2 2 4 AND draw rect 10 10 50 70 AND draw square 10 10 50</p>
 
 </body>
 </html>

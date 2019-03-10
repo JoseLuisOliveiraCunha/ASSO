@@ -45,6 +45,7 @@ class Command {
         }
     }
 }
+exports.Command = Command;
 class Memento {
     constructor(context, previous) {
         this.contextList = [];

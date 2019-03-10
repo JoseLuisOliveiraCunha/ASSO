@@ -1,6 +1,7 @@
 "use strict";
 //AND e UNION operator proxima aula 
 Object.defineProperty(exports, "__esModule", { value: true });
+const singleton_1 = require("./singleton");
 class TemporaryExpression {
     constructor() { }
     interpret(context) {
@@ -62,12 +63,12 @@ class DrawExpression {
         var contextParts = context.split(" ");
         switch (contextParts[0]) {
             case "square":
-                console.log("DRAW SQUARE" + context.substr(context.indexOf(" ")));
-                return contextParts.length == 4;
+                singleton_1.AppInfo.getRenderingSystem().drawSquare(contextParts);
+                return contextParts.length == 3; //drawSquare tira 'square' do contextParts, portanto o length e 3
                 break;
             case "rect":
-                console.log("DRAW RECT");
-                return contextParts.length == 5;
+                singleton_1.AppInfo.getRenderingSystem().drawRectangle(contextParts);
+                return contextParts.length == 4; //drawRectangle tira 'rect' do contextParts, portanto o length e 4
                 break;
             default:
                 return false;
