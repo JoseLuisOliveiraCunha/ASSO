@@ -118,5 +118,15 @@ function test(str : String){
     return instruction.interpret(str);
 }
 
+function draw() {
+    var canvas = <HTMLCanvasElement> document.getElementById('canvas');
+    if (canvas.getContext) {
+      var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+  
+      ctx.fillRect(25, 25, 100, 100);
+
+    }
+  }
+
 document.body.innerHTML = String(test("draw square 2 2 4"));
 

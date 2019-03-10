@@ -85,4 +85,11 @@ function test(str) {
     var instruction = new MasterExpression();
     return instruction.interpret(str);
 }
+function draw() {
+    var canvas = document.getElementById('canvas');
+    if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
+        ctx.fillRect(25, 25, 100, 100);
+    }
+}
 document.body.innerHTML = String(test("draw square 2 2 4"));
