@@ -26,11 +26,10 @@ export class Command {
     public undo() : void {
        if (this.commandStack.length == 0)
           return;
-       var m : Memento = this.commandStack.removeHead();
-       console.log("going to eliminate state: ", m);
-       console.log("new stack: ", this.commandStack);
-       this.redoStack.prepend(m);
-       this.redraw();
+
+        var m : Memento = this.commandStack.removeHead();
+        this.redoStack.prepend(m);
+        this.redraw();
     }
  
     public redo() : void {
@@ -49,10 +48,11 @@ export class Command {
         //limpar o canvas primeiro
         AppInfo.getRenderingSystem().cleanDrawBoard();
 
+        if(this.commandStack.length == 0)
+            return;
         var m : Memento = this.commandStack.head;
         var me = new MasterExpression();
         for(var context of m.getContextList()) {
-            console.log("GOING TO RERUN INSTRUCTION: ", context);
             me.interpret(context);
         }
     }
@@ -63,7 +63,8 @@ class Memento {
 
     public constructor(context: String, previous?: Memento) {
         if(previous != null)
-            this.contextList = previous.getContextList();
+            for(var command of previous.getContextList())
+                this.contextList.push(command);
         this.contextList.push(context);
     }
  

@@ -23,6 +23,7 @@ export class Canvas implements RenderEntity {
         let y = Number(args[1]);
         let size = Number(args[2]);
 
+        canvasContext.beginPath();
         canvasContext.rect(x, y, size, size);
         canvasContext.stroke();
         //canvasContext.fillRect(x, y, size, size);
@@ -42,6 +43,7 @@ export class Canvas implements RenderEntity {
         let width = Number(args[2]);
         let height = Number(args[3]);
 
+        canvasContext.beginPath();
         canvasContext.rect(x, y, width, height);
         canvasContext.stroke();
         //canvasContext.fillRect(x, y, width, height);
@@ -56,7 +58,8 @@ export class Canvas implements RenderEntity {
         
         let canvas = <HTMLCanvasElement> document.getElementById('canvas');
         let canvasContext = <CanvasRenderingContext2D> canvas.getContext('2d');
-        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+        canvasContext.beginPath();
+        canvasContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     }
 }
 

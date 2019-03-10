@@ -27,8 +27,6 @@ class Command {
         if (this.commandStack.length == 0)
             return;
         var m = this.commandStack.removeHead();
-        console.log("going to eliminate state: ", m);
-        console.log("new stack: ", this.commandStack);
         this.redoStack.prepend(m);
         this.redraw();
     }
@@ -45,10 +43,11 @@ class Command {
     redraw() {
         //limpar o canvas primeiro
         singleton_1.AppInfo.getRenderingSystem().cleanDrawBoard();
+        if (this.commandStack.length == 0)
+            return;
         var m = this.commandStack.head;
         var me = new interpreter_1.MasterExpression();
         for (var context of m.getContextList()) {
-            console.log("GOING TO RERUN INSTRUCTION: ", context);
             me.interpret(context);
         }
     }
@@ -58,7 +57,8 @@ class Memento {
     constructor(context, previous) {
         this.contextList = [];
         if (previous != null)
-            this.contextList = previous.getContextList();
+            for (var command of previous.getContextList())
+                this.contextList.push(command);
         this.contextList.push(context);
     }
     getContextList() {
