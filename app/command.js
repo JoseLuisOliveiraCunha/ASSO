@@ -8,13 +8,17 @@ class Command {
         this.redoStack = new linked_list_typescript_1.LinkedList();
     }
     execute(context) {
+        var me = new interpreter_1.MasterExpression();
+        if (!me.interpret(context)) {
+            this.redraw();
+            console.log("Error interpreting command! Redrawing previous state");
+            return;
+        }
         var currentCommand;
         if (this.commandStack.length == 0)
             currentCommand = new Memento(context);
         else
             currentCommand = new Memento(context, this.commandStack.head);
-        var me = new interpreter_1.MasterExpression();
-        me.interpret(context);
         this.commandStack.prepend(currentCommand);
         this.redoStack = new linked_list_typescript_1.LinkedList();
     }
@@ -32,6 +36,13 @@ class Command {
     }
     getCurrentState() {
         return this.commandStack.head;
+    }
+    redraw() {
+        var m = this.commandStack.head;
+        var me = new interpreter_1.MasterExpression();
+        for (var context in m.getContextList()) {
+            me.interpret(context);
+        }
     }
 }
 class Memento {

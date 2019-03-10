@@ -6,14 +6,18 @@ class Command {
     private redoStack : LinkedList<Memento> = new LinkedList<Memento>();
  
     public execute(context: String) : void{
+        var me = new MasterExpression();
+        if(!me.interpret(context)) {
+            this.redraw();
+            console.log("Error interpreting command! Redrawing previous state");
+            return;
+        }
         var currentCommand: Memento;
         if(this.commandStack.length == 0)
             currentCommand = new Memento(context);
         else
             currentCommand = new Memento(context, this.commandStack.head)
 
-        var me = new MasterExpression();
-        me.interpret(context);
         this.commandStack.prepend(currentCommand);
         this.redoStack = new LinkedList<Memento>();
     }
@@ -34,6 +38,14 @@ class Command {
 
     public getCurrentState() : Memento {
         return this.commandStack.head;
+    }
+
+    public redraw() : void {
+        var m : Memento = this.commandStack.head;
+        var me = new MasterExpression();
+        for(var context in m.getContextList()) {
+            me.interpret(context);
+        }
     }
  }
 
