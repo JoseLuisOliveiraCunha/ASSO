@@ -14,5 +14,5 @@ Compilar + correr:
 
 1º tsc
 2ª npm install (se não tem pasta "node_modules")
-3º npm start
+3º npm start (quando aparecer na consola [built] a verde à frente de todos os ficheiros .js, pode-se fazer CTRL+C)
 4º abrir "index.html" no browser
