@@ -7,16 +7,13 @@ interface AbstractExpression {
 }
 
 class TemporaryExpression implements AbstractExpression {
-    
-    constructor(){}
-
     interpret(context: String): boolean {
         return false;
     }
 }
 
 export class MasterExpression implements AbstractExpression {
-
+    
     private expression : AbstractExpression;
 
     constructor() {
@@ -40,7 +37,7 @@ export class MasterExpression implements AbstractExpression {
 }
 
 class InstructionExpression implements AbstractExpression {
-
+    
     private expression : AbstractExpression; 
 
     constructor(){
@@ -51,6 +48,15 @@ class InstructionExpression implements AbstractExpression {
         console.log("`interpret` method of InstructionExpression is being called!");
 
         var contextParts : String[] = context.split(" ");
+        var unionParts : String[] = context.split(" UNION ");
+
+        console.log("union parts " + unionParts);
+
+        if(unionParts.length != 1) {
+
+            this.expression = new UnionExpression();
+            return this.expression.interpret(context);
+        }
 
         switch(contextParts[0])
         {
@@ -107,6 +113,60 @@ class DrawExpression implements AbstractExpression {
             case "rect":
                 AppInfo.getRenderingSystem().drawRectangle(contextParts);
                 return contextParts.length == 4; //drawRectangle tira 'rect' do contextParts, portanto o length e 4
+                break;
+            default: 
+                return false;
+        }
+    }
+}
+
+class UnionExpression implements AbstractExpression {
+
+    public interpret(context: String): boolean {
+        console.log("`interpret` method of UnionExpression is being called!");
+
+        console.log("context: " + context);
+
+        var contextParts : String[] = context.split(" UNION ");
+        
+        var i : number;
+        var parcels : String[] = [];
+
+        for(i = 0; i < contextParts.length; i++)
+        {
+            let parcel : UnionParcel = new UnionParcel();
+
+            if(!parcel.interpret(contextParts[i])){
+                console.log("Invalid UNION EXPRESSION");
+                return false;
+            }
+             
+            parcels.push(contextParts[i]);
+        }
+
+        AppInfo.getRenderingSystem().drawUnion(parcels);
+
+        return true;
+    }
+}
+
+class UnionParcel implements AbstractExpression {
+
+    public interpret(context: String): boolean {
+        console.log("`interpret` method of DrawExpression is being called!");
+
+        var contextParts : String[] = context.split(" ");
+
+        if(contextParts[0] != "draw")
+            return false;
+        
+        switch(contextParts[1])
+        {
+            case "square":
+                return contextParts.length == 5; 
+                break;
+            case "rect":
+                return contextParts.length == 6;
                 break;
             default: 
                 return false;
