@@ -1,5 +1,7 @@
 //AND e UNION operator proxima aula 
 
+import {renderingSystem} from './app' //VARIABLE CONTAINING THE AREA WHERE THE DRAWING WILL TAKE PLACE
+
 interface AbstractExpression {
     interpret(context: String): boolean;
 }

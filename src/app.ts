@@ -1,4 +1,8 @@
 import {MasterExpression} from './interpreter'
+import {RenderEntity, Canvas, SVG} from './strategy'
+
+let renderingSystem : RenderEntity = new Canvas();
+export {renderingSystem};
 
 class Commands {
 
@@ -21,9 +25,12 @@ class Commands {
 
 window.onload = () => {
     let app = new Commands();
-    
+
     if(app.test("draw square 2 2 4"))
         app.draw();
+    
+    
+    //TODO: passar a rendering tool para
 }
 
 //document.body.innerHTML = String(app.test("draw square 2 2 4"));
