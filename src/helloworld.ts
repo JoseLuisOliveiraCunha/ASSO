@@ -100,13 +100,12 @@ class DrawExpression implements AbstractExpression {
         switch(contextParts[0])
         {
             case "square":
-                console.log("DRAW SQUARE" + context.substr(context.indexOf(" ")));
                 tool.drawSquare(contextParts);
-                return contextParts.length == 4;
+                return contextParts.length == 3; //drawSquare tira 'square' do contextParts, portanto o length e 3
                 break;
             case "rect":
-                console.log("DRAW RECT");
-                return contextParts.length == 5;
+                tool.drawRectangle(contextParts);
+                return contextParts.length == 4; //drawRectangle tira 'rect' do contextParts, portanto o length e 4
                 break;
             default: 
                 return false;
@@ -116,6 +115,7 @@ class DrawExpression implements AbstractExpression {
 
 interface DrawTool {
     drawSquare(args: String[]): any;
+    drawRectangle(args: String[]): any;
 }
 
 class CanvasTool implements DrawTool {
@@ -126,19 +126,44 @@ class CanvasTool implements DrawTool {
         
         args.shift() //to remove the 'square' argument of the draw expression
 
-        var canvasContext = <CanvasRenderingContext2D> this.canvas.getContext('2d');
+        console.log("DRAW SQUARE " + args);
+
+        let canvasContext = <CanvasRenderingContext2D> this.canvas.getContext('2d');
 
         let x = Number(args[0]);
         let y = Number(args[1]);
         let size = Number(args[2]);
 
-        canvasContext.fillRect(x, y, size, size);
+        canvasContext.rect(x, y, size, size);
+        canvasContext.stroke();
+        //canvasContext.fillRect(x, y, size, size);
+    }
+
+    drawRectangle(args: String[]) {
+        
+        args.shift() //to remove the 'rect' argument of the draw expression
+
+        console.log("DRAW SQUARE " + args);
+
+        let canvasContext = <CanvasRenderingContext2D> this.canvas.getContext('2d');
+
+        let x = Number(args[0]);
+        let y = Number(args[1]);
+        let width = Number(args[2]);
+        let height = Number(args[3]);
+
+        canvasContext.rect(x, y, width, height);
+        canvasContext.stroke();
+        //canvasContext.fillRect(x, y, width, height);
     }
 
 }
 
 class SVGTool implements DrawTool {
     drawSquare(args: String[]) {
+        throw new Error("Method not implemented.");
+    }
+    drawRectangle(args: String[]) {
         throw new Error("Method not implemented.");
     }
 
