@@ -73,22 +73,35 @@ function test2() {
     var p = new Publisher2();
     var mq = new AsyncQueue2();
 
-    mq.push(p);
-    mq.pull(s);
-    mq.pull(s2);
-    mq.push(p);
-    mq.push(p);
-    mq.pull(s);
-    mq.pull(s2);
-    mq.pull(s);
-    mq.pull(s2);
-    mq.pull(s);
-    mq.push(p);
-    mq.push(p);
-    mq.push(p);
-    mq.push(p);
-    mq.pull(s2);
-    mq.push(p);
+    var pushes = 0;
+    var pulls = 0;
+
+    for(var i = 0; i < 100; i ++) {
+        var r = Math.random();
+        if(r >= 0.5) {
+            mq.push(p);
+            pushes++;
+        }
+        else if(r >= 0.25) {
+            mq.pull(s);
+            pulls++;
+        }
+        else {
+            mq.pull(s2);
+            pulls++;
+        }  
+    }
+
+    console.log("pulls : " + pulls);
+    console.log("pushes : " + pushes);
+
+    while(pulls - pushes > 0) {
+        mq.push(p);
+        pushes++;
+    }
+
+    console.log("pulls : " + pulls);
+    console.log("pushes : " + pushes);
 }
 
 test2();
