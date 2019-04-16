@@ -1,9 +1,11 @@
 
 class Message {
     private value : number
+    private static nextValue : number = 0
 
     constructor() {
-        this.value = Math.floor(Math.random() * 100);
+        this.value = Message.nextValue;
+        Message.nextValue++;
     }
 
     getValue() : number {
