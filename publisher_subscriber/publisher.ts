@@ -1,4 +1,4 @@
-class Publisher
+/* class Publisher
 {
     private data = 0
     private queue : Queue
@@ -91,3 +91,4 @@ async function main() : Promise<void>{
 }
 
 main()
+ */

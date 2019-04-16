@@ -36,24 +36,17 @@ class Subscriber {
 class AsyncQueue {
     
     private messageQueue : Message[]
-    private subscriberWaiting : boolean
 
     constructor() {
         this.messageQueue = [];
-        this.subscriberWaiting = false;
     }
 
-    public async pull(s : Subscriber) {
-        console.log("pull attempt");
+    public async pull(s : Subscriber) : Promise<void>{
+        console.log("subscriber pull attempt");
 
-        if(this.subscriberWaiting)
-            return
-
-        
         while(this.messageQueue.length == 0) {
-            this.subscriberWaiting = true;
-            //return;
 
+            console.log("waiting for message")
             let promise = new Promise((resolve, reject) => {
                 setTimeout(() => resolve(), 1000)
               });
@@ -67,23 +60,26 @@ class AsyncQueue {
         this.messageQueue.splice(0, 1);
     }
 
-    public async push(p : Publisher) {
-        console.log("push attempt");
+    public async push(p : Publisher) : Promise<void>{
+        console.log("publisher push");
 
         this.messageQueue.push(p.generate())
     }
 }
 
-var s = new Subscriber();
-var p = new Publisher();
-var mq = new AsyncQueue();
+function test() {
+    var s = new Subscriber();
+    var p = new Publisher();
+    var mq = new AsyncQueue();
 
-mq.push(p);
-mq.pull(s);
-mq.push(p);
-mq.push(p);
-mq.pull(s);
-mq.pull(s);
-mq.pull(s);
-mq.push(p);
+    mq.push(p);
+    mq.pull(s);
+    mq.push(p);
+    mq.push(p);
+    mq.pull(s);
+    mq.pull(s);
+    mq.pull(s);
+    mq.push(p);
+}
 
+test();
